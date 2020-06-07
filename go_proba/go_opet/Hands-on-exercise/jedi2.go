@@ -2,14 +2,14 @@ package main
 
 import "fmt"
 
+var x int
+var y string
+var z bool
+
 func main() {
-	x := 42
+
 	fmt.Println(x)
-	x = 99
-	fmt.Println(x)
-	y := 100 + 70
 	fmt.Println(y)
-	z := "Bond, James"
 	fmt.Println(z)
-	
+	//result is zero values
 }
