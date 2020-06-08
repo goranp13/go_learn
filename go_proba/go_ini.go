@@ -11,7 +11,7 @@ type gogi int
 
 func main() {
 
-	cfg, err := ini.Load("my.ini")
+	cfg, err := ini.Load("go_ini.ini")
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
 		os.Exit(1)
@@ -32,5 +32,5 @@ func main() {
 
 	//kak mijenjati vrijednosti u ini file-u
 	//	cfg.Section("COMMON").Key("DB_NAME").SetValue("AURADB")
-	//    cfg.SaveTo("my.ini.local")
+	//    cfg.SaveTo("go_ini.ini.local")
 }
