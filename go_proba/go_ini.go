@@ -9,9 +9,6 @@ import (
 
 type gogi int
 
-var x gogi
-var y int
-
 func main() {
 
 	cfg, err := ini.Load("my.ini")
