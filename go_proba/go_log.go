@@ -22,12 +22,12 @@ func main() {
 	log.SetOutput(file)
 
 	log.Println("This is the log file.")*/
-	fnmqtt_log()
+	fnmqttlog()
 
-	fnfbd_log()
+	fnfbdlog()
 }
 
-func fnmqtt_log() {
+func fnmqttlog() {
 
 	file, e := os.OpenFile(d+"_mqtt_log_go.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 
@@ -42,7 +42,7 @@ func fnmqtt_log() {
 	log.Println("This is the mqtt_log file.")
 }
 
-func fnfbd_log() {
+func fnfbdlog() {
 
 	file, e := os.OpenFile(d+"_fbd_log_go.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 
