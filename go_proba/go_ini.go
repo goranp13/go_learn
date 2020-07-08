@@ -30,7 +30,7 @@ func main() {
 	fmt.Println("DB_NAME", cfg.Section("COMMON").Key("DB_NAME").String())
 	fmt.Println("DB_PWD", cfg.Section("COMMON").Key("DB_PWD").String())
 
-	//kak mijenjati vrijednosti u ini file-u
+	//kako mijenjati vrijednosti u ini file-u
 	//	cfg.Section("COMMON").Key("DB_NAME").SetValue("AURADB")
 	//    cfg.SaveTo("go_ini.ini.local")
 }
