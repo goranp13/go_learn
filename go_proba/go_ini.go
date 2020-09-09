@@ -33,4 +33,6 @@ func main() {
 	//kako mijenjati vrijednosti u ini file-u
 	//	cfg.Section("COMMON").Key("DB_NAME").SetValue("AURADB")
 	//    cfg.SaveTo("go_ini.ini.local")
+	//cfg.Section("COMMON").Key("DB_PWD").SetValue("masterkey")
+	//cfg.SaveTo("go_ini.ini")
 }
