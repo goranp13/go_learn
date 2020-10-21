@@ -11,5 +11,5 @@ MQTT_DEBUG_LEVEL = DEBUG
 DB_SERVER        = 127.0.0.1
 ; DB_NAME=D:\sacs\database\AURA30DB.FDB
 DB_NAME          = D:\DB\Gdatabase-2020.4.7-18.57.1\AURADB.FDB
-DB_PWD           = masterkey
+DB_PWD           = masterkey_GP
 
