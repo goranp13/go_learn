@@ -1,0 +1,53 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
+//VrstaDok može biti račun ili report
+type VrstaDok struct {
+	Naziv string `json:"Naziv"`
+	Body  []byte `json:"Body"`
+}
+
+type Dok []VrstaDok
+
+func sviDok(w http.ResponseWriter, r *http.Request) {
+	dok := Dok{
+		VrstaDok{Naziv: "Test rn", Body: []byte{}},
+	}
+
+	fmt.Println("Popis dokumenata")
+	json.NewEncoder(w).Encode(dok)
+}
+
+func testDok(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "test dokumenti")
+}
+
+func homePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Homepage start")
+}
+
+func handleRequests() {
+
+	myrouter := mux.NewRouter().StrictSlash(true)
+	//stanje prije importa gorilla/mux
+	/* 	http.HandleFunc("/", homePage)
+	   	http.HandleFunc("/dokumenti", sviDok) */
+	myrouter.HandleFunc("/", homePage)
+	myrouter.HandleFunc("/dokumenti", sviDok).Methods("GET")
+	myrouter.HandleFunc("/dokumenti", testDok).Methods("POST")
+	log.Fatal(http.ListenAndServe(":8081", myrouter))
+}
+
+func main() {
+
+	handleRequests()
+
+}

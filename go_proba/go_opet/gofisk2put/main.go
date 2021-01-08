@@ -1,0 +1,102 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"time"
+
+	"github.com/gorilla/mux"
+)
+
+//format vremena za naziv dokumenta
+var t = time.Now()
+var d = t.Format("2006-01-02")
+var dt = t.Format("2006-01-02 15-04-05")
+
+//VrstaDok može biti račun ili report
+type VrstaDok struct {
+	ID    string `json:"Id"`
+	Naziv string `json:"Naziv"`
+	Body  string `json:"Body"`
+}
+
+//Dok je globalna varijabla - riješiti kasnije
+var Dok []VrstaDok
+
+//popis svih dokumenata
+func sviDok(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Popis dokumenata")
+	json.NewEncoder(w).Encode(Dok)
+}
+
+//prikaz samo jednog dokumenta po ID ključu, kasnije promijeniti u nešto drugo a ne broj
+func jedanDok(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	key := vars["id"]
+
+	for _, dokumenti := range Dok {
+		if dokumenti.ID == key {
+			json.NewEncoder(w).Encode(dokumenti)
+		}
+	}
+}
+
+//upis novog dokumenta i spremanje u datoteku
+func noviDok(w http.ResponseWriter, r *http.Request) {
+	reqBody, _ := ioutil.ReadAll(r.Body)
+
+	var dokumenti VrstaDok
+	json.Unmarshal(reqBody, &dokumenti)
+	Dok = append(Dok, dokumenti)
+	json.NewEncoder(w).Encode(dokumenti)
+
+	val := dokumenti
+	sdata := string([]byte(reqBody))
+
+	////////////////
+	err := os.Chdir("./logs")
+	//////////////////////////
+
+	f, err := os.OpenFile(val.Naziv+"_"+d+".txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	if _, err = f.WriteString("\n" + dt + "\n " + sdata); err != nil {
+		panic(err)
+	}
+
+}
+
+//homepage
+func homePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Homepage start")
+}
+
+func handleRequests() {
+
+	staticDir := "/logs/"
+	myrouter := mux.NewRouter().StrictSlash(true)
+
+	myrouter.HandleFunc("/", homePage)
+	//myrouter.HandleFunc("/dokumenti", sviDok)
+	//myrouter.HandleFunc("/dokumenti/{id}", jedanDok)
+	myrouter.HandleFunc("/dokument", noviDok).Methods("POST")
+
+	myrouter.
+		PathPrefix(staticDir).
+		Handler(http.StripPrefix(staticDir, http.FileServer(http.Dir("."+staticDir))))
+	log.Fatal(http.ListenAndServe(":8081", myrouter))
+}
+
+func main() {
+
+	handleRequests()
+
+}
